@@ -1,0 +1,22 @@
+{
+  "name": "gptproxy",
+  "version": "1.0.0",
+  "description": "proxy api for openai",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtorov/gptproxy.git"
+  },
+  "keywords": [
+    "gpt"
+  ],
+  "author": "dtorov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dtorov/gptproxy/issues"
+  },
+  "homepage": "https://github.com/dtorov/gptproxy#readme"
+}
