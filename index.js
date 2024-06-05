@@ -28,7 +28,7 @@ async function queryOpenai(query) {
   });
 */
     const chatCompletion = await openai.chat.completions.create(query);
-    console.log(chatCompletion);
+    console.dir(chatCompletion, { depth: null , colors: true});
     return chatCompletion;
 }
 
@@ -40,6 +40,7 @@ app.post('/ask', async function (req, res) {
             res.send({error: 'auth error'});
             return true;
         }
+        console.dir(requestData, { depth: null , colors: true});
         const openaiQuery = requestData.query;
         const openaiReply = await queryOpenai(openaiQuery);
 
