@@ -4,12 +4,13 @@ const cors = require("cors");
 const OpenAI = require('openai');
 
 const { host, port, token, openaiBotboomApiKey } = require("./config");
+console.log('process.env', process.env);
 const PORT = process.env.PORT || port;
 const HOST = process.env.HOST || host;
 const Token = process.env.TOKEN || token;
 const openai = new OpenAI({
     //apiKey: process.env['org-BNZkupLCFdvPqKGitiaSTFog'], // This is the default and can be omitted
-    apiKey: process.env.PORT || openaiBotboomApiKey
+    apiKey: process.env.ApiKey || openaiBotboomApiKey
   });
 
 app.use(cors());
