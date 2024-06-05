@@ -34,7 +34,6 @@ async function queryOpenai(query) {
 
 app.post('/ask', async function (req, res) {
     try {
-        console.log(req.body);
         const requestData = req.body;
         if(requestData.token !== Token) {
             res.send({error: 'auth error'});
