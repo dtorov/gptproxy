@@ -3,7 +3,7 @@ const app = Express();
 const cors = require("cors");
 const OpenAI = require('openai');
 
-const { port, token, openaiBotboomApiKey } = require("./config");
+const { host, port, token, openaiBotboomApiKey } = require("./config");
 const PORT = process.env.PORT || port;
 const HOST = process.env.PORT || host;
 const Token = process.env.PORT || token;
