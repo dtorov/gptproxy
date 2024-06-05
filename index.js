@@ -5,8 +5,8 @@ const OpenAI = require('openai');
 
 const { host, port, token, openaiBotboomApiKey } = require("./config");
 const PORT = process.env.PORT || port;
-const HOST = process.env.PORT || host;
-const Token = process.env.PORT || token;
+const HOST = process.env.HOST || host;
+const Token = process.env.TOKEN || token;
 const openai = new OpenAI({
     //apiKey: process.env['org-BNZkupLCFdvPqKGitiaSTFog'], // This is the default and can be omitted
     apiKey: process.env.PORT || openaiBotboomApiKey
