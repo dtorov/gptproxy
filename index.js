@@ -10,7 +10,7 @@ const TOKEN = process.env.TOKEN || Date.now();
 
 console.log('process.env', process.env);
 
-let openai;
+let openai, openaiKey;
 
 app.use(cors());
 app.use(Express.json());
@@ -31,7 +31,7 @@ app.post('/openai/init', async function (req, res) {
       console.log('/openai/init', req.body, TOKEN)
       throw new Error('auth error');
     }
-    if(req.body.openaiApiKey) {
+    if(!openai && req.body.openaiApiKey) {
       await openAiInit(req.body.openaiApiKey);
       res.send({auth: true})
       return true;
