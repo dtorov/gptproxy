@@ -3,47 +3,54 @@ const app = Express();
 const cors = require("cors");
 const OpenAI = require('openai');
 
-const { host, port, token, openaiBotboomApiKey } = require("./config");
+const PORT = process.env.PORT || '3003';
+const HOST = process.env.HOST || '127.0.0.1';
+const TOKEN = process.env.TOKEN || Date.now();
+
+
 console.log('process.env', process.env);
-const PORT = process.env.PORT || port;
-const HOST = process.env.HOST || host;
-const Token = process.env.TOKEN || token;
-const openai = new OpenAI({
-    //apiKey: process.env['org-BNZkupLCFdvPqKGitiaSTFog'], // This is the default and can be omitted
-    apiKey: process.env.ApiKey || openaiBotboomApiKey
-  });
+
+let openai;
 
 app.use(cors());
 app.use(Express.json());
 
-app.listen(PORT, HOST || '127.0.0.1', () => {
-    console.log("Server Listening on PORT:", port);
+app.listen(PORT, HOST, () => {
+    console.log("Server Listening on PORT:", PORT);
   });
 
-async function queryOpenai(query) {
-/*
-  const chatCompletion = await openai.chat.completions.create({
-    messages: [{ role: 'user', content: 'Say this is a test' }],
-    model: 'gpt-3.5-turbo',
+async function openAiInit(openaiApiKey) {
+  openai = new OpenAI({
+    apiKey: openaiApiKey
   });
-*/
-    const chatCompletion = await openai.chat.completions.create(query);
-    console.dir(chatCompletion, { depth: null , colors: true});
-    return chatCompletion;
 }
 
-app.post('/ask', async function (req, res) {
-    try {
-        const requestData = req.body;
-        if(requestData.token !== Token) {
-            res.send({error: 'auth error'});
-            return true;
-        }
-        console.dir(requestData, { depth: null , colors: true});
-        const openaiQuery = requestData.query;
-        const openaiReply = await queryOpenai(openaiQuery);
+app.post('/openai/init', async function (req, res) {
+  try {
+    if(req.token !== TOKEN) throw new Error('auth error');
+    if(req.openaiApiKey) {
+      await openAiInit(req.openaiApiKey);
+      res.send({})
+    }
+    throw new Error('openaiApiKey error');
+  } catch(err) {
+    console.error(err);
+  }
+})
 
-        res.send({openaiReply});
+async function queryOpenai(query) {
+      const chatCompletion = await openai.chat.completions.create(query);
+      console.dir(chatCompletion, { depth: null , colors: true});
+      return chatCompletion;
+  }
+
+app.post('/openai/ask', async function (req, res) {
+    try {
+      if(!openai) throw new Error('openai not ready');
+      const requestData = req.body;
+      if(requestData.token !== TOKEN) throw new Error('auth error');
+      const openaiReply = await queryOpenai(requestData.query);
+      res.send(openaiReply);
     } catch(err) {
         console.error(err.message)
         res.send({error: 'server error', message: err.message || 'unknown'});
