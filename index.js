@@ -28,7 +28,7 @@ async function openAiInit(openaiApiKey) {
 app.post('/openai/init', async function (req, res) {
   try {
     if(req.token !== TOKEN) {
-      console.log('/openai/init', req.token, TOKEN)
+      console.log('/openai/init', req, TOKEN)
       throw new Error('auth error');
     }
     if(req.openaiApiKey) {
@@ -38,6 +38,7 @@ app.post('/openai/init', async function (req, res) {
     throw new Error('openaiApiKey error');
   } catch(err) {
     console.error(err);
+    res.send({error: 'server error', message: err.message || 'unknown'});
   }
 })
 
