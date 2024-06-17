@@ -3,7 +3,7 @@ const app = Express();
 const cors = require("cors");
 const OpenAI = require('openai');
 
-const PORT = process.env.PORT || '3003';
+const PORT = process.env.PORT || '3000';
 const HOST = process.env.HOST || '127.0.0.1';
 const TOKEN = process.env.TOKEN || Date.now();
 
@@ -27,7 +27,10 @@ async function openAiInit(openaiApiKey) {
 
 app.post('/openai/init', async function (req, res) {
   try {
-    if(req.token !== TOKEN) throw new Error('auth error');
+    if(req.token !== TOKEN) {
+      console.log('/openai/init', req.token, TOKEN)
+      throw new Error('auth error');
+    }
     if(req.openaiApiKey) {
       await openAiInit(req.openaiApiKey);
       res.send({})
