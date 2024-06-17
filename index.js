@@ -33,7 +33,8 @@ app.post('/openai/init', async function (req, res) {
     }
     if(req.body.openaiApiKey) {
       await openAiInit(req.body.openaiApiKey);
-      res.send({})
+      res.send({auth: true})
+      return true;
     }
     throw new Error('openaiApiKey error');
   } catch(err) {
