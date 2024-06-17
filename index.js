@@ -27,12 +27,12 @@ async function openAiInit(openaiApiKey) {
 
 app.post('/openai/init', async function (req, res) {
   try {
-    if(req.token !== TOKEN) {
-      console.log('/openai/init', req, TOKEN)
+    if(req.body.token !== TOKEN) {
+      console.log('/openai/init', req.body, TOKEN)
       throw new Error('auth error');
     }
-    if(req.openaiApiKey) {
-      await openAiInit(req.openaiApiKey);
+    if(req.body.openaiApiKey) {
+      await openAiInit(req.body.openaiApiKey);
       res.send({})
     }
     throw new Error('openaiApiKey error');
