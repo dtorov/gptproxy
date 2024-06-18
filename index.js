@@ -6,42 +6,22 @@ const OpenAI = require('openai');
 const PORT = process.env.PORT || '3000';
 const HOST = process.env.HOST || '127.0.0.1';
 const TOKEN = process.env.TOKEN || Date.now();
+const OPENAIKEY = process.env.OPENAIKEY || Date.now();
 
 
 console.log('process.env', process.env);
 
-let openai, openaiKey;
+let openai = new OpenAI({
+  apiKey: OPENAIKEY
+});
 
 app.use(cors());
 app.use(Express.json());
 
 app.listen(PORT, HOST, () => {
     console.log("Server Listening on PORT:", PORT);
+    openAiInit(req.body.openaiApiKey);
   });
-
-async function openAiInit(openaiApiKey) {
-  openai = new OpenAI({
-    apiKey: openaiApiKey
-  });
-}
-
-app.post('/openai/init', async function (req, res) {
-  try {
-    if(req.body.token !== TOKEN) {
-      console.log('/openai/init', req.body, TOKEN)
-      throw new Error('auth error');
-    }
-    if(!openai && req.body.openaiApiKey) {
-      await openAiInit(req.body.openaiApiKey);
-      res.send({auth: true})
-      return true;
-    }
-    throw new Error('openaiApiKey error');
-  } catch(err) {
-    console.error(err);
-    res.send({error: 'server error', message: err.message || 'unknown'});
-  }
-})
 
 async function queryOpenai(query) {
       const chatCompletion = await openai.chat.completions.create(query);
