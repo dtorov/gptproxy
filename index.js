@@ -20,7 +20,6 @@ app.use(Express.json());
 
 app.listen(PORT, HOST, () => {
     console.log("Server Listening on PORT:", PORT);
-    openAiInit(req.body.openaiApiKey);
   });
 
 async function queryOpenai(query) {
