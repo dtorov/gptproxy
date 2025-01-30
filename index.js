@@ -57,6 +57,17 @@ app.post('/openai/ask', async function (req, res) {
   }
 });
 
+app.post('/v1/chat/completions', async function (req, res) {
+  console.log('/v1/chat/completions', req.body);
+  try {
+    if (req.body.token !== TOKEN) throw new Error('auth error');
+    const openaiReply = await apiClient.post('/threads', req.body);
+    res.status(openaiReply.status).json(openaiReply.data);
+  } catch (err) {
+    console.error(err.message)
+    res.send({ error: 'server error', message: err.message || 'unknown' });
+  }
+});
 
 // Proxy endpoint to create a new thread
 app.post('/proxy/threads', async (req, res) => {
