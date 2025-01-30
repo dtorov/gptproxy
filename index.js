@@ -61,7 +61,7 @@ app.post('/v1/chat/completions', async function (req, res) {
   console.log('/v1/chat/completions', req.body);
   try {
     if (req.body.token !== TOKEN) throw new Error('auth error');
-    const openaiReply = await apiClient.post('/v1/chat/completions', req.body);
+    const openaiReply = await apiClient.post('/chat/completions', req.body);
     res.status(openaiReply.status).json(openaiReply.data);
   } catch (err) {
     console.error(err.message)
