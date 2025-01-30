@@ -22,6 +22,19 @@ let openai = new OpenAI({
 app.use(cors());
 app.use(Express.json());
 
+const authenticateToken = async (req, res, next) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token && token === TOKEN ) next();
+    return res.sendStatus(403);
+  } catch (err) {
+    console.log(err.message);
+    return res.sendStatus(400);
+  }
+}
+
+app.use(authenticateToken);
 
 // Base URL for OpenAI API
 const BASE_URL = 'https://api.openai.com/v1';
