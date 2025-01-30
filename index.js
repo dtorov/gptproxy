@@ -73,9 +73,8 @@ app.post('/openai/ask', async function (req, res) {
 app.post('/v1/chat/completions', async function (req, res) {
   console.log('/v1/chat/completions', req.body);
   try {
-    if (req.body.token !== TOKEN) throw new Error('auth error');
-    delete req.body.token;
     const openaiReply = await apiClient.post('/chat/completions', req.body);
+    console.dir(openaiReply.data, { depth: null, colors: true });
     res.status(openaiReply.status).json(openaiReply.data);
   } catch (err) {
     console.error(err.message)
@@ -87,9 +86,8 @@ app.post('/v1/chat/completions', async function (req, res) {
 app.post('/proxy/threads', async (req, res) => {
   console.log('/proxy/threads', req.body);
   try {
-    const requestData = req.body;
-    if (requestData.token !== TOKEN) throw new Error('auth error');
     const response = await apiClient.post('/threads', req.body);
+    console.dir(response.data, { depth: null, colors: true });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
@@ -100,8 +98,6 @@ app.post('/proxy/threads', async (req, res) => {
 app.post('/proxy/threads/:threadId/messages', async (req, res) => {
   console.log('/proxy/threads/:threadId/messages', req.body);
   try {
-    const requestData = req.body;
-    if (requestData.token !== TOKEN) throw new Error('auth error');
     const { threadId } = req.params;
     const response = await apiClient.post(`/threads/${threadId}/messages`, req.body);
     res.status(response.status).json(response.data);
@@ -114,8 +110,6 @@ app.post('/proxy/threads/:threadId/messages', async (req, res) => {
 app.post('/proxy/threads/:threadId/runs', async (req, res) => {
   console.log('/proxy/threads/:threadId/runs', req.body);
   try {
-    const requestData = req.body;
-    if (requestData.token !== TOKEN) throw new Error('auth error');
     const { threadId } = req.params;
     const response = await apiClient.post(`/threads/${threadId}/runs`, req.body);
     res.status(response.status).json(response.data);
@@ -128,8 +122,6 @@ app.post('/proxy/threads/:threadId/runs', async (req, res) => {
 app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
   console.log('/proxy/threads/:threadId/runs/:runId', req.body);
   try {
-    const requestData = req.body;
-    if (requestData.token !== TOKEN) throw new Error('auth error');
     const { threadId, runId } = req.params;
     const response = await apiClient.get(`/threads/${threadId}/runs/${runId}`);
     res.status(response.status).json(response.data);
@@ -142,8 +134,6 @@ app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
 app.get('/proxy/threads/:threadId/messages', async (req, res) => {
   console.log('/proxy/threads/:threadId/messages', req.body);
   try {
-    const requestData = req.body;
-    if (requestData.token !== TOKEN) throw new Error('auth error');
     const { threadId } = req.params;
     const response = await apiClient.get(`/threads/${threadId}/messages`);
     res.status(response.status).json(response.data);
