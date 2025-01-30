@@ -44,6 +44,7 @@ async function queryOpenai(query) {
 }
 
 app.post('/openai/ask', async function (req, res) {
+  console.log('/openai/ask', req.body);
   try {
     if (!openai) throw new Error('openai not ready');
     const requestData = req.body;
@@ -59,6 +60,7 @@ app.post('/openai/ask', async function (req, res) {
 
 // Proxy endpoint to create a new thread
 app.post('/proxy/threads', async (req, res) => {
+  console.log('/proxy/threads', req.body);
   try {
     const requestData = req.body;
     if (requestData.token !== TOKEN) throw new Error('auth error');
@@ -71,6 +73,7 @@ app.post('/proxy/threads', async (req, res) => {
 
 // Proxy endpoint to attach an image to a thread
 app.post('/proxy/threads/:threadId/messages', async (req, res) => {
+  console.log('/proxy/threads/:threadId/messages', req.body);
   try {
     const requestData = req.body;
     if (requestData.token !== TOKEN) throw new Error('auth error');
@@ -84,6 +87,7 @@ app.post('/proxy/threads/:threadId/messages', async (req, res) => {
 
 // Proxy endpoint to run a thread
 app.post('/proxy/threads/:threadId/runs', async (req, res) => {
+  console.log('/proxy/threads/:threadId/runs', req.body);
   try {
     const requestData = req.body;
     if (requestData.token !== TOKEN) throw new Error('auth error');
@@ -97,6 +101,7 @@ app.post('/proxy/threads/:threadId/runs', async (req, res) => {
 
 // Proxy endpoint to get the status of a thread run
 app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
+  console.log('/proxy/threads/:threadId/runs/:runId', req.body);
   try {
     const requestData = req.body;
     if (requestData.token !== TOKEN) throw new Error('auth error');
@@ -110,6 +115,7 @@ app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
 
 // Proxy endpoint to get the result of a thread
 app.get('/proxy/threads/:threadId/messages', async (req, res) => {
+  console.log('/proxy/threads/:threadId/messages', req.body);
   try {
     const requestData = req.body;
     if (requestData.token !== TOKEN) throw new Error('auth error');
