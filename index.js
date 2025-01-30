@@ -26,8 +26,8 @@ const authenticateToken = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    if (token && token === TOKEN ) next();
-    return res.sendStatus(403);
+    if (!token || token !== TOKEN ) return res.sendStatus(403);
+    next();
   } catch (err) {
     console.log(err.message);
     return res.sendStatus(400);
