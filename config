@@ -1,8 +1,0 @@
-module.exports = {
-  port: 3000,
-  host: '82.192.49.27',
-  jwtSecret: '!!test@!!',
-  jwtExpirationInSeconds: 60 * 60, // 1 hour
-  token: 'OkDMvAoushCdvNJw',
-  openaiBotboomApiKey: 'sk-service-account-1-ALDR7jJoRbMzNB0m0N9wT3BlbkFJo455vWF5rxqV5aSiL1v3'
-}
