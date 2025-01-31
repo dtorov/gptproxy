@@ -87,7 +87,7 @@ app.post('/proxy/threads', async (req, res) => {
   try {
     const response = await apiClient.post('/threads', req.body, {
       headers: {
-        'Authorization': `Bearer ${OPENAIKEY}`,
+        Authorization: `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json',
       },
@@ -115,7 +115,7 @@ app.post('/proxy/files', upload.single('file'), async (req, res) => {
 
     const response = await apiClient.post(`/files`, {
       headers: {
-        'Authorization': `Bearer ${OPENAIKEY}`,
+         Authorization: `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'multipart/form-data'
       },
