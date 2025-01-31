@@ -113,13 +113,13 @@ app.post('/proxy/files', upload.single('file'), async (req, res) => {
     formData.append('file', fileBlob, req.file.originalname);
     formData.append('purpose', 'assistants');
 
-    const response = await apiClient.post(`/files`, {
+    const response = await apiClient.post(`/files`, formData, {
       headers: {
          Authorization: `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'multipart/form-data'
       },
-    }, formData);
+    });
 
     res.status(response.status).json(response.data);
   } catch (error) {
