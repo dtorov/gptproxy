@@ -43,10 +43,6 @@ app.use(authenticateToken);
 const BASE_URL = 'https://api.openai.com/v1';
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    'Authorization': `Bearer ${OPENAIKEY}`,
-    'OpenAI-Beta': 'assistants=v2',
-  }
 });
 
 app.listen(PORT, HOST, () => {
@@ -106,7 +102,7 @@ app.post('/proxy/threads', async (req, res) => {
 // files
 app.post('/proxy/files', upload.single('file'), async (req, res) => {
   console.log('/proxy/files', req.body);
-try {
+  try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
