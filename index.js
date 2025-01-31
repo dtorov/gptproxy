@@ -92,7 +92,7 @@ app.post('/proxy/threads', async (req, res) => {
   try {
     const response = await apiClient.post('/threads', req.body, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json',
       },
@@ -139,7 +139,7 @@ app.post('/proxy/threads/:threadId/messages', async (req, res) => {
     const { threadId } = req.params;
     const response = await apiClient.post(`/threads/${threadId}/messages`, req.body, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json',
       },
@@ -157,7 +157,7 @@ app.post('/proxy/threads/:threadId/runs', async (req, res) => {
     const { threadId } = req.params;
     const response = await apiClient.post(`/threads/${threadId}/runs`, req.body, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json',
       },
@@ -175,7 +175,7 @@ app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
     const { threadId, runId } = req.params;
     const response = await apiClient.get(`/threads/${threadId}/runs/${runId}`, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json',
       },
@@ -193,7 +193,7 @@ app.get('/proxy/threads/:threadId/messages', async (req, res) => {
     const { threadId } = req.params;
     const response = await apiClient.get(`/threads/${threadId}/messages`, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${OPENAIKEY}`,
         'OpenAI-Beta': 'assistants=v2',
         'Content-Type': 'application/json',
       },
