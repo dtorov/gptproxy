@@ -166,7 +166,7 @@ app.post('/proxy/threads/:threadId/runs', async (req, res) => {
 
 // Proxy endpoint to get the status of a thread run
 app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
-  console.log('/proxy/threads/:threadId/runs/:runId', req.body);
+  // console.log('/proxy/threads/:threadId/runs/:runId', req.body);
   try {
     const { threadId, runId } = req.params;
     const response = await apiClient.get(`/threads/${threadId}/runs/${runId}`, {
@@ -184,7 +184,7 @@ app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
 
 // Proxy endpoint to get the result of a thread
 app.get('/proxy/threads/:threadId/messages', async (req, res) => {
-  console.log('/proxy/threads/:threadId/messages', req.body);
+  // console.log('/proxy/threads/:threadId/messages', req.body);
   try {
     const { threadId } = req.params;
     const response = await apiClient.get(`/threads/${threadId}/messages`, {
