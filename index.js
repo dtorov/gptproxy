@@ -106,6 +106,7 @@ try {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
+    const formData = new FormData();
     const fileBlob = new Blob([req.file.buffer], { type: req.file.mimetype }); // Преобразуем Buffer в Blob
 
     formData.append('file', fileBlob, req.file.originalname);
