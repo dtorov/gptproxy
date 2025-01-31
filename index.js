@@ -4,6 +4,8 @@ const cors = require("cors");
 const OpenAI = require('openai');
 
 const axios = require('axios');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() }); // Храним файл в памяти
 // const bodyParser = require('body-parser');
 
 
@@ -96,11 +98,19 @@ app.post('/proxy/threads', async (req, res) => {
 });
 
 // files
-app.post('/proxy/files', async (req, res) => {
+app.post('/proxy/files', upload.single('file'), async (req, res) => {
   console.log('/proxy/files', req.body);
-  try {
-    const response = await apiClient.post('/files', req.body);
-    console.dir(response.data, { depth: null, colors: true });
+try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const formData = new FormData();
+    formData.append('file', req.file.buffer, req.file.originalname);
+    formData.append('purpose', 'assistants');
+
+    const response = await apiClient.post(`/files`, formData);
+
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
