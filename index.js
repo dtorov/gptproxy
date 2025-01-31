@@ -6,6 +6,7 @@ const OpenAI = require('openai');
 const axios = require('axios');
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() }); // Храним файл в памяти
+const { Blob } = require('buffer'); // Используем Blob из buffer
 // const bodyParser = require('body-parser');
 
 
@@ -105,8 +106,9 @@ try {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const formData = new FormData();
-    formData.append('file', req.file.buffer, req.file.originalname);
+    const fileBlob = new Blob([req.file.buffer], { type: req.file.mimetype }); // Преобразуем Buffer в Blob
+
+    formData.append('file', fileBlob, req.file.originalname);
     formData.append('purpose', 'assistants');
 
     const response = await apiClient.post(`/files`, formData);
