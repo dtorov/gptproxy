@@ -46,7 +46,7 @@ const apiClient = axios.create({
   headers: {
     'Authorization': `Bearer ${OPENAIKEY}`,
     'OpenAI-Beta': 'assistants=v2',
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'application/json'
   }
 });
 
@@ -90,7 +90,12 @@ app.post('/v1/chat/completions', async function (req, res) {
 app.post('/proxy/threads', async (req, res) => {
   console.log('/proxy/threads', req.body);
   try {
-    const response = await apiClient.post('/threads', req.body);
+    const response = await apiClient.post('/threads', req.body, {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
     console.dir(response.data, { depth: null, colors: true });
     res.status(response.status).json(response.data);
   } catch (error) {
@@ -112,7 +117,7 @@ try {
     formData.append('file', fileBlob, req.file.originalname);
     formData.append('purpose', 'assistants');
 
-    const response = await apiClient.post(`/files`, formData);
+    const response = await apiClient.post(`/files`,{}  ,formData);
 
     res.status(response.status).json(response.data);
   } catch (error) {
@@ -125,7 +130,12 @@ app.post('/proxy/threads/:threadId/messages', async (req, res) => {
   console.log('/proxy/threads/:threadId/messages', req.body);
   try {
     const { threadId } = req.params;
-    const response = await apiClient.post(`/threads/${threadId}/messages`, req.body);
+    const response = await apiClient.post(`/threads/${threadId}/messages`, req.body, {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
@@ -137,7 +147,12 @@ app.post('/proxy/threads/:threadId/runs', async (req, res) => {
   console.log('/proxy/threads/:threadId/runs', req.body);
   try {
     const { threadId } = req.params;
-    const response = await apiClient.post(`/threads/${threadId}/runs`, req.body);
+    const response = await apiClient.post(`/threads/${threadId}/runs`, req.body, {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
@@ -149,7 +164,12 @@ app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
   console.log('/proxy/threads/:threadId/runs/:runId', req.body);
   try {
     const { threadId, runId } = req.params;
-    const response = await apiClient.get(`/threads/${threadId}/runs/${runId}`);
+    const response = await apiClient.get(`/threads/${threadId}/runs/${runId}`, {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
@@ -161,7 +181,12 @@ app.get('/proxy/threads/:threadId/messages', async (req, res) => {
   console.log('/proxy/threads/:threadId/messages', req.body);
   try {
     const { threadId } = req.params;
-    const response = await apiClient.get(`/threads/${threadId}/messages`);
+    const response = await apiClient.get(`/threads/${threadId}/messages`, {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
