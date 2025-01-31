@@ -46,7 +46,6 @@ const apiClient = axios.create({
   headers: {
     'Authorization': `Bearer ${OPENAIKEY}`,
     'OpenAI-Beta': 'assistants=v2',
-    'Content-Type': 'application/json'
   }
 });
 
