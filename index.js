@@ -42,6 +42,7 @@ const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Authorization': `Bearer ${OPENAIKEY}`,
+    'OpenAI-Beta': 'assistants=v2',
     'Content-Type': 'application/json'
   }
 });
@@ -87,6 +88,18 @@ app.post('/proxy/threads', async (req, res) => {
   console.log('/proxy/threads', req.body);
   try {
     const response = await apiClient.post('/threads', req.body);
+    console.dir(response.data, { depth: null, colors: true });
+    res.status(response.status).json(response.data);
+  } catch (error) {
+    handleError(res, error);
+  }
+});
+
+// files
+app.post('/proxy/files', async (req, res) => {
+  console.log('/proxy/files', req.body);
+  try {
+    const response = await apiClient.post('/files', req.body);
     console.dir(response.data, { depth: null, colors: true });
     res.status(response.status).json(response.data);
   } catch (error) {
