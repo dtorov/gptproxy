@@ -14,6 +14,7 @@ const PORT = process.env.PORT || '3000';
 const HOST = process.env.HOST || '127.0.0.1';
 const TOKEN = process.env.TOKEN || Date.now();
 const OPENAIKEY = process.env.OPENAIKEY || Date.now();
+const OPENAIKEY_MAKER = process.env.OPENAIKEY_MAKER || Date.now();
 
 
 console.log('process.env', process.env);
@@ -43,11 +44,6 @@ app.use(authenticateToken);
 const BASE_URL = 'https://api.openai.com/v1';
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    'Authorization': `Bearer ${OPENAIKEY}`,
-    'OpenAI-Beta': 'assistants=v2',
-    'Content-Type': 'multipart/form-data'
-  }
 });
 
 app.listen(PORT, HOST, () => {
@@ -90,7 +86,13 @@ app.post('/v1/chat/completions', async function (req, res) {
 app.post('/proxy/threads', async (req, res) => {
   console.log('/proxy/threads', req.body);
   try {
-    const response = await apiClient.post('/threads', req.body);
+    const response = await apiClient.post('/threads', req.body, {
+      headers: {
+        Authorization: `Bearer ${OPENAIKEY_MAKER}`,
+        'OpenAI-Beta': 'assistants=v2',
+        'Content-Type': 'application/json',
+      },
+    });
     console.dir(response.data, { depth: null, colors: true });
     res.status(response.status).json(response.data);
   } catch (error) {
@@ -101,17 +103,24 @@ app.post('/proxy/threads', async (req, res) => {
 // files
 app.post('/proxy/files', upload.single('file'), async (req, res) => {
   console.log('/proxy/files', req.body);
-try {
+  try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
+    const formData = new FormData();
     const fileBlob = new Blob([req.file.buffer], { type: req.file.mimetype }); // Преобразуем Buffer в Blob
 
     formData.append('file', fileBlob, req.file.originalname);
     formData.append('purpose', 'assistants');
 
-    const response = await apiClient.post(`/files`, formData);
+    const response = await apiClient.post(`/files`, formData, {
+      headers: {
+         Authorization: `Bearer ${OPENAIKEY_MAKER}`,
+        'OpenAI-Beta': 'assistants=v2',
+        'Content-Type': 'multipart/form-data'
+      },
+    });
 
     res.status(response.status).json(response.data);
   } catch (error) {
@@ -124,7 +133,13 @@ app.post('/proxy/threads/:threadId/messages', async (req, res) => {
   console.log('/proxy/threads/:threadId/messages', req.body);
   try {
     const { threadId } = req.params;
-    const response = await apiClient.post(`/threads/${threadId}/messages`, req.body);
+    const response = await apiClient.post(`/threads/${threadId}/messages`, req.body, {
+      headers: {
+        'Authorization': `Bearer ${OPENAIKEY_MAKER}`,
+        'OpenAI-Beta': 'assistants=v2',
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
@@ -136,7 +151,13 @@ app.post('/proxy/threads/:threadId/runs', async (req, res) => {
   console.log('/proxy/threads/:threadId/runs', req.body);
   try {
     const { threadId } = req.params;
-    const response = await apiClient.post(`/threads/${threadId}/runs`, req.body);
+    const response = await apiClient.post(`/threads/${threadId}/runs`, req.body, {
+      headers: {
+        'Authorization': `Bearer ${OPENAIKEY_MAKER}`,
+        'OpenAI-Beta': 'assistants=v2',
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
@@ -145,10 +166,16 @@ app.post('/proxy/threads/:threadId/runs', async (req, res) => {
 
 // Proxy endpoint to get the status of a thread run
 app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
-  console.log('/proxy/threads/:threadId/runs/:runId', req.body);
+  // console.log('/proxy/threads/:threadId/runs/:runId', req.body);
   try {
     const { threadId, runId } = req.params;
-    const response = await apiClient.get(`/threads/${threadId}/runs/${runId}`);
+    const response = await apiClient.get(`/threads/${threadId}/runs/${runId}`, {
+      headers: {
+        'Authorization': `Bearer ${OPENAIKEY_MAKER}`,
+        'OpenAI-Beta': 'assistants=v2',
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
@@ -157,10 +184,16 @@ app.get('/proxy/threads/:threadId/runs/:runId', async (req, res) => {
 
 // Proxy endpoint to get the result of a thread
 app.get('/proxy/threads/:threadId/messages', async (req, res) => {
-  console.log('/proxy/threads/:threadId/messages', req.body);
+  // console.log('/proxy/threads/:threadId/messages', req.body);
   try {
     const { threadId } = req.params;
-    const response = await apiClient.get(`/threads/${threadId}/messages`);
+    const response = await apiClient.get(`/threads/${threadId}/messages`, {
+      headers: {
+        'Authorization': `Bearer ${OPENAIKEY_MAKER}`,
+        'OpenAI-Beta': 'assistants=v2',
+        'Content-Type': 'application/json',
+      },
+    });
     res.status(response.status).json(response.data);
   } catch (error) {
     handleError(res, error);
