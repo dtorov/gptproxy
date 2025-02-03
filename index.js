@@ -60,7 +60,7 @@ app.post('/openai/ask', async function (req, res) {
   console.log('/openai/ask', req.body);
   try {
     if (!openai) throw new Error('openai not ready');
-    const openaiReply = await queryOpenai(requestData.query);
+    const openaiReply = await queryOpenai(req.body);
     res.send(openaiReply);
   } catch (err) {
     console.error(err.message)
