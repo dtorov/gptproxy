@@ -60,8 +60,6 @@ app.post('/openai/ask', async function (req, res) {
   console.log('/openai/ask', req.body);
   try {
     if (!openai) throw new Error('openai not ready');
-    const requestData = req.body;
-    if (requestData.token !== TOKEN) throw new Error('auth error');
     const openaiReply = await queryOpenai(requestData.query);
     res.send(openaiReply);
   } catch (err) {
@@ -73,7 +71,12 @@ app.post('/openai/ask', async function (req, res) {
 app.post('/v1/chat/completions', async function (req, res) {
   console.log('/v1/chat/completions', req.body);
   try {
-    const openaiReply = await apiClient.post('/chat/completions', req.body);
+    const openaiReply = await apiClient.post('/chat/completions', req.body, {
+      headers: {
+        Authorization: `Bearer ${OPENAIKEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
     console.dir(openaiReply.data, { depth: null, colors: true });
     res.status(openaiReply.status).json(openaiReply.data);
   } catch (err) {
