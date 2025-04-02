@@ -9,7 +9,6 @@ const upload = multer({ storage: multer.memoryStorage() }); // Храним фа
 const { Blob } = require('buffer'); // Используем Blob из buffer
 // const bodyParser = require('body-parser');
 
-
 const PORT = process.env.PORT || '3000';
 const HOST = process.env.HOST || '127.0.0.1';
 const TOKEN = process.env.TOKEN || Date.now();
@@ -24,7 +23,7 @@ let openai = new OpenAI({
 });
 
 app.use(cors());
-app.use(Express.json());
+app.use(Express.json({ limit: '50MB' }));
 
 const authenticateToken = async (req, res, next) => {
   try {
